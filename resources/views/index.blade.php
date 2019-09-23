@@ -4,13 +4,6 @@
 
 
 <script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>           
-<script type="text/javascript">
-    $( document ).ready(function() {
-        $('.telefone').mask('(00) 0 0000-0000');
-        $('.dinheiro').mask('000.000.000.000.000,00', {reverse: true});
-        $('.estado').mask('AA');
-    });
-</script>
 <div id="container" style="width:100%; height:400px;">
         <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -59,9 +52,9 @@
                                 <tbody>
                                     <tr>
                                             
-                                        <td class="txt-oflo dinheiro" id="dinheiro">{{$totalContas}}</td>
-                                        <td class="txt-oflo dinheiro" id="dinheiro">{{$totalDispesas }}</td>
-                                        <td class="txt-oflo dinheiro" id="dinheiro">(salario+extra)-(contas do mes+ despesas do mes)</td>
+                                        <td class="txt-oflo dinheiro" >{{$totalContas}}</td>
+                                        <td class="txt-oflo dinheiro" >{{$totalDispesas }}</td>
+                                        <td class="txt-oflo dinheiro" >(salario+extra)-(contas do mes+ despesas do mes)</td>
                                    </tbody>
                                 </table>
                             </div>
@@ -71,7 +64,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Contas proximas do vencimento</h4>
                             </div>
- <div class="col-12">
+                         <div class="col-12">
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
@@ -85,9 +78,13 @@
                                         </tr>
                                     </thead>
                                 <tbody>
-                                    @foreach($Vencimento as $conta)
+                                    @foreach($Vencimentos as $conta)
+                                    <?php
+                                        $newDate = date("d-m-Y", strtotime($conta['data']));
+                                        $date = str_replace('-', '/', $newDate );
+                                        $conta['data'] = $date;
+                                    ?>
                                     <tr>
-                                            
                                         <td class="txt-oflo">{{ $conta['local'] }}</td>
                                         <td class="txt-oflo">{{ $conta['data'] }}</td>
                                         <td class="txt-oflo">{{ $conta['preco'] }}</td>
@@ -104,7 +101,4 @@
                         </div>
                     </div>
                 </div>
-
-        
-
 @endsection

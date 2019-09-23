@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Contas;
 use App\Dispesas;
-
-
+use App\Extra;
+use App\User;
+use Session;
 
 
 
@@ -20,15 +21,14 @@ class DashboardController extends Controller
     
     public function index(Request $request)
     {
-        $contas = Contas::where('id_usuario', $session);
-
+        
         $dispMes = $this->CalcDispesas();
         $conMes = $this->CalcContas();
         $totalContas = $this->totalContas();
         $totalDispesas = $this->totalDispesas();
-        $Vencimento = $this->Vencimento($request);
+        $Vencimentos = $this->Vencimento($request);
 
-        return view('index')->with(compact('contas', 'dispMes','conMes', 'totalContas','totalDispesas','Vencimento'));
+        return view('index')->with(compact('dispMes','conMes', 'totalContas','totalDispesas','Vencimentos'));
 
     }
 
@@ -38,7 +38,7 @@ class DashboardController extends Controller
 
         $dispesas = array();
         foreach ($meses as $k => $mes) {
-            $dispesas[$k] = Dispesas::whereBetween('created_at', ["2019-$mes-01 00:00:00", "2019-$mes-31 23:59:59"])->get()->toArray();
+            $dispesas[$k] = Dispesas::whereBetween('created_at', ["2019-$mes-01 00:00:00", "2019-$mes-31 23:59:59"])->where('id_usuario', Session::get('user_id'))->get()->toArray();
             if (count($dispesas[$k]) == 0) {
                 $dispesas[$k][] = 0;
             }
@@ -71,7 +71,7 @@ class DashboardController extends Controller
 
         $contas = array();
         foreach ($meses as $k => $mes) {
-            $contas[$k] = Contas::whereBetween('created_at', ["2019-$mes-01 00:00:00", "2019-$mes-31 23:59:59"])->get()->toArray();
+            $contas[$k] = Contas::whereBetween('created_at', ["2019-$mes-01 00:00:00", "2019-$mes-31 23:59:59"])->where('id_usuario', Session::get('user_id'))->get()->toArray();
             if (count($contas[$k]) == 0) {
                 $contas[$k][] = 0;
             }
@@ -101,7 +101,7 @@ class DashboardController extends Controller
     private function totalContas()
     {   
         $calc = array();
-        $contas = Contas::all()->toArray();
+        $contas = Contas::where('id_usuario', Session::get('user_id'))->get();
         foreach ($contas as $k => $cont) {
             $calc[$k] = $cont['preco'];
         } 
@@ -114,18 +114,18 @@ class DashboardController extends Controller
     private function totalDispesas()
     {   
         $calc = array();
-        $dispesas = Dispesas::all()->toArray();
+        $dispesas = Dispesas::where('id_usuario', Session::get('user_id'))->get();
         foreach ($dispesas as $k => $disp) {
             $calc[$k] = $disp['preco'];
         } 
-
         $totalDispesas = array_sum($calc);
 
         return $totalDispesas;
     }
     private function Vencimento(Request $request)
     {
-        $mes = date('m')-1;
+        $dataAtual = date('Y-m-d');
+        $mes = date('m');
         // $mes_inicial = $request->get('mes_inicial', 1);
         // $mes_final = $request->get('mes_final', 12);
 
@@ -135,77 +135,32 @@ class DashboardController extends Controller
 
         $contas = array();
 
-        $contas = Contas::whereBetween('created_at', ["2019-$mes-01 00:00:00", "2019-$mes-31 23:59:59"])->get()->toArray();
+        $contas = Contas::whereBetween('data', [$dataAtual, "2019-$mes-31"])->where('id_usuario', Session::get('user_id'))->get()->toArray();
 
         return $contas;
     }
-   
+    private function restoSalario(Request $request)
+    {
+        $dataAtual = date('Y-m-d');
+        $mes = date('m');
+
+        $meses = ['Jan' => '01', 'Fev'=> '02', 'Mar' => '03','Abr'=>'04','Mai'=>'05','Jun'=>'06', 'Jul'=>'07','Ago'=>'08','Set'=>'09','Out'=>'10','Nov'=>'11','Dez'=>'12' ];
+
+        $salario = array();
+
+        $salario = Salario::whereBetween('data', [$dataAtual, "2019-$mes-31"])->where('id_usuario', Session::get('user_id'))->get()->toArray();
+
+        return $resto;
+    }
  
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Contas $contas)
     {
         
-         $contas = Contas::all();
+        $contas = Contas::where('id_usuario', Session::get('user_id'))->get();
 
         return view('showcontas')->with('contas', $contas);
     }
     
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
           $contas = \App\Home::find($id);

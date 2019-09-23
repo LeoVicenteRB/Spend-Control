@@ -24,7 +24,9 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/dispesas', array('as'=>'dispesas.index', 'uses'=>'DispesasController@index'));
 	Route::post('/dispesas','DispesasController@store');
 	Route::get('/dispesas.showdisp', array('as'=>'dispesas.show', 'uses'=>'DispesasController@show'));
-
+	Route::get('/extra', array('as'=>'extra.create', 'uses'=>'ExtraController@create'));
+	Route::post('/extra','ExtraController@store');
+	Route::get('/showextra', array('as'=>'extra.show', 'uses'=>'ExtraController@show'));
 });
 
 Auth::routes();

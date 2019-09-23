@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContasTable extends Migration
+class AddUserDispesasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateContasTable extends Migration
      */
     public function up()
     {
-        Schema::create('contas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('local');
-            $table->string('tipo');
-            $table->date('data');
-            $table->string('preco');
-            $table->timestamps();
+        Schema::table('dispesas', function (Blueprint $table) {
+            $table->integer('id_usuario')->after('preco');        
+           
+
         });
     }
 
@@ -30,6 +27,8 @@ class CreateContasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contas');
+         Schema::create('dispesas', function (Blueprint $table) {
+            $table->dropColumn('id_usuario');
+        });
     }
 }

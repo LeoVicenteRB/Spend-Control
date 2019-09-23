@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use Session;
 class HomeController extends Controller
 {
     /**
@@ -23,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Session::put('user_id', Auth::user()->id);
         return redirect()->route('dashboard.index');
     }
 

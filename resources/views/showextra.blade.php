@@ -6,31 +6,29 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Contas</h4>
+                                <h4 class="card-title">Dinheiro Extra</h4>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         
                                         <tr>
-                                            <th class="border-top-0">Conta</th>
-                                            <th class="border-top-0">Vencimento</th>
-                                            <th class="border-top-0">Tipo de conta</th>
-                                            <th class="border-top-0">Preço</th>
+                                            <th class="border-top-0">Origem</th>
+                                            <th class="border-top-0">Data</th>
+                                            <th class="border-top-0">Total recebido</th>
                                         </tr>
                                     </thead>
-                                @foreach($contas as $conta)
+                                @foreach($extra as $extra)
                                     <?php
-                                        $newDate = date("d-m-Y", strtotime($conta->data));
+                                        $newDate = date("d-m-Y", strtotime($extra->data));
                                         $date = str_replace('-', '/', $newDate );
-                                        $conta->data = $date;
+                                        $extra->data = $date;
                                     ?>
                                     <tbody>
                                         <tr>
-                                            <td class="txt-oflo">{{$conta -> local }}</td>
-                                            <td class="txt-oflo">{{$conta -> data }}</td>
-                                            <td class="txt-oflo">{{$conta -> tipo }}</td>
-                                            <td><span class="font-medium">{{$conta -> preco}}</span></td>
+                                            <td class="txt-oflo">{{$extra -> origem }}</td>
+                                            <td class="txt-oflo">{{$extra -> data }}</td>
+                                            <td><span class="font-medium">{{$extra -> total}}</span></td>
                                         </tr>
                                     </tbody>
                                 @endforeach

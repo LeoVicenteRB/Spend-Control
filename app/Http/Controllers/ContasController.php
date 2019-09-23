@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
   
 use App\Contas;
 use Illuminate\Http\Request;
+use Session;
   
 class ContasController extends Controller
 {
     public function create()
     {
         return view('cadastro');
-
-        
     }
    
     public function store(request $request) //Request Cadastro
@@ -27,6 +26,15 @@ class ContasController extends Controller
             'data.required' => 'O campo Data é obrigatório!',
             'preco.required' => 'O campo Preço é obrigatório!',
         ]);
+
+        $date = str_replace('/', '-', $request['data'] );
+        $newDate = date("Y-m-d", strtotime($date));
+
+        $request['data'] = $newDate;
+
+        $request['id_usuario'] = Session::get('user_id');
+
+
         Contas::create($request->all());
         return redirect()->route('conta.create')
                         ->with('success','Conta cadastrada com sucesso.');

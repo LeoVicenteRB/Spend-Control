@@ -18,7 +18,7 @@ class CreateDispesasTable extends Migration
             $table->string('local');
             $table->string('tipo');
             $table->string('preco');
-            $table->string('datap');
+            $table->date('datap');
             $table->timestamps();
         });
     }

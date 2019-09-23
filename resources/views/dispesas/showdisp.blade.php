@@ -19,6 +19,11 @@
                                         </tr>
                                     </thead>
                                     @foreach($dispesas as $dispesas)
+                                     <?php
+                                        $newDate = date("d-m-Y", strtotime($dispesas->datap));
+                                        $date = str_replace('-', '/', $newDate );
+                                        $dispesas->datap = $date;
+                                    ?>
                                     <tbody>
                                         <td class="txt-oflo">{{$dispesas -> local }}</td>
                                         <td class="txt-oflo">{{$dispesas -> tipo }}</td>

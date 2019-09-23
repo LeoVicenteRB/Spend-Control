@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContasTable extends Migration
+class CreateExtraTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateContasTable extends Migration
      */
     public function up()
     {
-        Schema::create('contas', function (Blueprint $table) {
+        Schema::create('extra', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('local');
-            $table->string('tipo');
+            $table->string('origem');
             $table->date('data');
-            $table->string('preco');
+            $table->string('total');
+            $table->integer('id_usuario');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateContasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contas');
+        Schema::dropIfExists('extra');
     }
 }

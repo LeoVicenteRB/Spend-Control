@@ -96,7 +96,7 @@
                             <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Perfil</a>
                             <div class="dropdown-menu dropdown-menu-right user-dd animated">
                                 <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> Editar</a>
-                                <a class="dropdown-item" href="{{ route('home.sair') }}"><i class="ti-email m-r-5 m-l-5"></i> Sair</a>
+                                <a class="dropdown-item" href="{{ route('home.sair') }}"><i class="ti-user m-r-5 m-l-5"></i> Sair</a>
                             </div>
                         </li>
                         <!-- ============================================================== -->
@@ -133,6 +133,12 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"  aria-expanded="false"href="{{route('extra.show')}}">
+                                <i class="mdi mdi-av-timer"></i>
+                                <span class="hide-menu">Histórico de Extras</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-link"  aria-expanded="false"href="{{route('conta.create')}}">
                                 <i class="mdi mdi-account-network"></i>
                                 <span class="hide-menu">Cadastrar contas</span>
@@ -142,6 +148,12 @@
                             <a class="sidebar-link waves-effect waves-dark sidebar-link"  aria-expanded="false"href="{{route('dispesas.index')}}">
                                 <i class="mdi mdi-account-network"></i>
                                 <span class="hide-menu">Cadastrar despesas</span>
+                            </a>
+                        </li>
+                           <li class="sidebar-item">
+                            <a class="sidebar-link waves-effect waves-dark sidebar-link"  aria-expanded="false"href="{{route('extra.create')}}">
+                                <i class="mdi mdi-account-network"></i>
+                                <span class="hide-menu">Cadastrar Extras</span>
                             </a>
                         </li>
                   

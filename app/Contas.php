@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contas extends Model
 {
-     protected $fillable = [
-        'local', 'tipo', 'data', 'preco'
+    protected $fillable = [
+        'local', 'tipo', 'data', 'preco','id_usuario'
     ];
 }

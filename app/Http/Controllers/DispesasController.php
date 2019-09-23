@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Dispesas;
 use Illuminate\Http\Request;
+use Session;
 
 class DispesasController extends Controller
 {
@@ -31,6 +32,15 @@ class DispesasController extends Controller
             'datap.required' => 'O campo Data é obrigatório!',
             'preco.required' => 'O campo Preço é obrigatório!',
         ]);
+
+
+        $date = str_replace('/', '-', $request['datap'] );
+        $newDate = date("Y-m-d", strtotime($date));
+
+        $request['datap'] = $newDate;
+
+        $request['id_usuario'] = Session::get('user_id');
+
         Dispesas::create($request->all());
         return redirect()->route('dispesas.index')
                         ->with('success','Dispesa cadastrada com sucesso.');
@@ -40,7 +50,7 @@ class DispesasController extends Controller
    
     public function show(Dispesas $dispesas)
     {
-         $dispesas = Dispesas::all();
+         $dispesas = Dispesas::where('id_usuario', Session::get('user_id'))->get();
 
         return view('dispesas/showdisp')->with('dispesas', $dispesas);
     }
