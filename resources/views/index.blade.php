@@ -3,7 +3,22 @@
 @section('wrapper')
 
 
-<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script>           
+<script src="https://igorescobar.github.io/jQuery-Mask-Plugin/js/jquery.mask.min.js"></script> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>        
+<script>
+$(function(){
+   $(".mascara").maskMoney({
+      prefix: 'R$ ',
+      allowNegative: true,
+      thousands: '.',
+      decimal: ','
+   });
+});
+</script>
+
+
+
 <div id="container" style="width:100%; height:400px;">
         <script>
                 document.addEventListener('DOMContentLoaded', function () {
@@ -37,24 +52,23 @@
            <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Total Gasto</h4>
+                                <h4 class="card-title">Relatório de gastos</h4>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         
                                         <tr>
-                                            <th class="border-top-0">Contas</th>
-                                            <th class="border-top-0">Despesas</th>
+                                            <th class="border-top-0">Total de contas já cadastradas</th>
+                                            <th class="border-top-0">Total de despesas já cadastradas</th>
                                             <th class="border-top-0">Esse mês você ainda tem</th>
                                         </tr>
                                     </thead>
                                 <tbody>
                                     <tr>
-                                            
-                                        <td class="txt-oflo dinheiro" >{{$totalContas}}</td>
-                                        <td class="txt-oflo dinheiro" >{{$totalDispesas }}</td>
-                                        <td class="txt-oflo dinheiro" >(salario+extra)-(contas do mes+ despesas do mes)</td>
+                                        <td class="txt-oflo dinheiro" class="mascara">{{$totalContas}}</td>
+                                        <td class="txt-oflo dinheiro" class="mascara">{{$totalDispesas }}</td>
+                                        <td class="txt-oflo dinheiro" class="mascara">{{$Resto}}</td>
                                    </tbody>
                                 </table>
                             </div>
@@ -101,4 +115,5 @@
                         </div>
                     </div>
                 </div>
+
 @endsection

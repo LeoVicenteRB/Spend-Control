@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use Session;
 
 class UserController extends Controller
 {
@@ -39,6 +40,10 @@ class UserController extends Controller
             'passwordsame.same' => 'O campo Senha e Confirme precisam ser iguais!',
 
         ]);
+         $source = array('.', ',');
+        $replace = array('', '.');
+
+        $data['salario'] = str_replace($source, $replace, $data['salario']);
         User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -46,9 +51,53 @@ class UserController extends Controller
             'cpf' => $data['cpf'],
             'password' => Hash::make($data['password']),
         ]);
+
         return redirect()->route('home.index')
                         ->with('success','Usuário cadastrado com sucesso.');
 
    
     }
+    public function Edit()
+    {
+        $user = User::where('id', Session::get('user_id'))->first()->toArray();
+
+        $source = array('.', ',');
+        $replace = array('', '.');
+
+        $user['salario'] = number_format($user['salario'], 2);
+
+        return view('edit.edit',compact('user'));
+
+    }
+
+    public function Update(Request $request)
+    {   
+        $id = Session::get('user_id');
+        $input = $request->all();
+        $user = User::findOrFail($id);
+
+        $request->validate([
+                'name' => 'required',
+                'cpf' => 'required',
+                'email'=>'required',
+                'salario'=>'required',
+            ],[
+                'name.required' => 'O campo Nome é obrigatório!',
+                'cpf.required' => 'O campo CPF é obrigatório!',
+                'email.required' => 'O campo Email é obrigatório!',
+                'salario.required' => 'O campo Salário é obrigatório!',
+            ]
+        );
+
+        $source = array('.', ',');
+        $replace = array('', '.');
+
+        $input['salario'] = str_replace($source, $replace, $input['salario']);
+
+        $user->fill($input);
+        $user->save();
+        return redirect()->route('user.edit')
+                        ->with('success','Perfil editado com sucesso.');
+    }
+    
 }

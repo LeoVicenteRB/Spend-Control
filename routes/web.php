@@ -27,6 +27,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/extra', array('as'=>'extra.create', 'uses'=>'ExtraController@create'));
 	Route::post('/extra','ExtraController@store');
 	Route::get('/showextra', array('as'=>'extra.show', 'uses'=>'ExtraController@show'));
+	Route::get('/edit.edit', array('as'=>'user.edit', 'uses'=>'UserController@edit'));
+	Route::post('/edit.edit','UserController@update');
 });
 
 Auth::routes();

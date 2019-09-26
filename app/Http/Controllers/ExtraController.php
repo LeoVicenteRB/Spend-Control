@@ -54,7 +54,7 @@ class ExtraController extends Controller
         $request['id_usuario'] = Session::get('user_id');
 
 
-        extra::create($request->all());
+        Extra::create($request->all());
         return redirect()->route('extra.create')
                         ->with('success','Dinheiro extra cadastrado com sucesso.');
 

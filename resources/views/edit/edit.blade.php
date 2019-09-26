@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('wrapper')
-
+<script type="text/javascript" src="js/jquery-1.2.6.pack.js"></script>
+<script type="text/javascript" src="js/jquery.maskedinput-1.1.4.pack.js"/></script>
 @if ($errors->any())
     <div class="alert alert-danger">
         <strong>Ops!</strong> Ocorreu um erro!<br><br>
@@ -13,48 +14,62 @@
     </div>
 @endif
 
-
     @if ($message = Session::get('success'))
         <div class="alert alert-success">
             <p>{{ $message }}</p>
         </div>
     @endif
-    
-<div class="row">
-    <div class="col-12">
+ <div class="row">
+    <div class="col-12">   
         <div class="card card-body">
-            <h4 class="card-title">Editar contas</h4>
-            <form class="form-horizontal m-t-30" action="{{action('ContasController@edit')}}" method="get">
-                @csrf
-                @method('post')
-                <div class="form-group" >
-                    <label>Local da conta <span class="help"> Ex: Banco, Lojas, etc...</span></label>
-                    <input type="text" class="form-control" id="local" name="local" maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label>Tipo de conta <span class="help"> Ex: Roupas,comidas, etc ...</span></label>
-                    <input type="text" id="tipo" name="tipo" class="form-control"maxlength="20">
-                </div>
-                <div class="form-group">
-                    <label>Data de vencimento</label>
-                    <input type="text" class="form-control" id="data" name="data" maxlength="10" onkeypress="mascaraData(this)">
-                </div>
-                <div class="form-group">
-                    <label>Preço</label>
-                    <input type="text" class="form-control" placeholder="R$" id="preco" name="preco" onKeyPress="return(moeda(this,'.',',',event))">
-                </div>
-                <div>
-                 <button type="submit" class="btn btn-primary" value="edit">Enviar</button>
-                     </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
-
-
+<div class="container">
+    <h1>Editar perfil</h1>
+    <hr>
+    <div class="row">
+      
+      <div class="col-md-9 personal-info">
+        <h3>Informações pessoais</h3>
+        
+        <form class="form-horizontal" action="{{action('UserController@update')}}"method="post" role="form">
+            @csrf
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Nome:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="Nome" required="required" name="name" value="{{ $user['name'] }}">
+            </div>
+          </div>
+           <div class="form-group">
+            <label class="col-lg-3 control-label">CPF:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="CPF" id="cpf" required="required" name="cpf" id="CPF" maxlength="14" value="{{ $user['cpf'] }}">
+            </div>
+          </div>
+        
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="E-mail" required="required" name="email"value="{{ $user['email'] }}" >
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Salário:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" placeholder="Salario" required="required" name="salario" onKeyPress="return(moeda(this,'.',',',event))" value="{{ $user['salario'] }}">
+            </div>
+          </div>
+          <div class="form-group">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      </div>
 
 <script language="javascript">   
 function moeda(a, e, r, t) {
@@ -93,79 +108,9 @@ function moeda(a, e, r, t) {
     }
     return !1
 }
-function mascaraData(val) {
-  var pass = val.value;
-  var expr = /[0123456789]/;
-
-  for (i = 0; i < pass.length; i++) {
-    // charAt -> retorna o caractere posicionado no índice especificado
-    var lchar = val.value.charAt(i);
-    var nchar = val.value.charAt(i + 1);
-
-    if (i == 0) {
-      // search -> retorna um valor inteiro, indicando a posição do inicio da primeira
-      // ocorrência de expReg dentro de instStr. Se nenhuma ocorrencia for encontrada o método retornara -1
-      // instStr.search(expReg);
-      if ((lchar.search(expr) != 0) || (lchar > 3)) {
-        val.value = "";
-      }
-
-    } else if (i == 1) {
-
-      if (lchar.search(expr) != 0) {
-        // substring(indice1,indice2)
-        // indice1, indice2 -> será usado para delimitar a string
-        var tst1 = val.value.substring(0, (i));
-        val.value = tst1;
-        continue;
-      }
-
-      if ((nchar != '/') && (nchar != '')) {
-        var tst1 = val.value.substring(0, (i) + 1);
-
-        if (nchar.search(expr) != 0)
-          var tst2 = val.value.substring(i + 2, pass.length);
-        else
-          var tst2 = val.value.substring(i + 1, pass.length);
-
-        val.value = tst1 + '/' + tst2;
-      }
-
-    } else if (i == 4) {
-
-      if (lchar.search(expr) != 0) {
-        var tst1 = val.value.substring(0, (i));
-        val.value = tst1;
-        continue;
-      }
-
-      if ((nchar != '/') && (nchar != '')) {
-        var tst1 = val.value.substring(0, (i) + 1);
-
-        if (nchar.search(expr) != 0)
-          var tst2 = val.value.substring(i + 2, pass.length);
-        else
-          var tst2 = val.value.substring(i + 1, pass.length);
-
-        val.value = tst1 + '/' + tst2;
-      }
-    }
-
-    if (i >= 6) {
-      if (lchar.search(expr) != 0) {
-        var tst1 = val.value.substring(0, (i));
-        val.value = tst1;
-      }
-    }
-  }
-
-  if (pass.length > 10)
-    val.value = val.value.substring(0, 10);
-  return true;
-}
-
- </script> 
-
-
-
+  $(document).ready(function(){
+    $("#cpf").mask("999.999.999-99");
+  });
+    </script>
+<hr>
 @endsection
