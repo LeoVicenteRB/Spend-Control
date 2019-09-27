@@ -177,8 +177,6 @@ class DashboardController extends Controller
             return $resto; 
         }
 
-    
-
     public function show(Contas $contas)
     {
         

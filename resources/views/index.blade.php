@@ -52,7 +52,7 @@ $(function(){
            <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="card-title">Relatório de gastos</h4>
+                               <h4 class="card-title">Relatório de gastos</h4>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">

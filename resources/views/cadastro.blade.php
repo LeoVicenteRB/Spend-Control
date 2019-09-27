@@ -23,8 +23,16 @@
     <div class="col-12">
         <div class="card card-body">
             <h4 class="card-title">Cadastro de contas</h4>
+            
             <form class="form-horizontal m-t-30" action="{{action('ContasController@store')}}" method="post">
                 @csrf
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                      <h4 align="right">Conta mensal </h4>
+                                <label class="switch ">
+                                  <input type="checkbox" class="default" id="cb_conta_mensal">
+                                        <span class="slider"></span>
+                                 </label>
                 <div class="form-group" >
                     <label>Local da conta </label>
                     <input type="text" class="form-control" id="local" name="local" maxlength="20" placeholder="Ex: Banco, Lojas, etc..." value="{{ old('local') }}" required="request">
@@ -34,7 +42,7 @@
                     <input type="text" id="tipo" name="tipo" class="form-control"maxlength="20" placeholder=" Ex: Roupas,comidas, etc ..."value="{{ old('tipo') }}" required="request">
                 </div>
                 <div class="form-group">
-                    <label>Data de vencimento</label>
+                    <label id="label_vencimento">Data de vencimento</label>
                     <input type="text" class="form-control" id="data" name="data" maxlength="10" onkeypress="mascaraData(this)" placeholder="00/00/0000"value="{{ old('data') }}" required="request">
                 </div>
                 <div class="form-group">
@@ -54,7 +62,31 @@
 
 
 
-<script language="javascript">   
+<script language="javascript"> 
+$(function(){
+  console.log("HTML CARREGADO !");
+
+  $("#cb_conta_mensal").on("change", change_conta_tipo);
+
+});
+
+function change_conta_tipo(){
+  var conta_tipo = $("#cb_conta_mensal").prop("checked");
+
+  if (conta_tipo == true)
+  {
+    $("#data").attr("placeholder", "00").attr("maxlength", 2);
+    $("#data").attr("name", "dia_venc");
+    $("#label_vencimento").html("Dia do vencimento");
+  } else {
+    $("#data").attr("placeholder", "00/00/0000").attr("maxlength", 10);
+    $("#data").attr("name", "data");
+    $("#label_vencimento").html("Data do vencimento");
+  }
+
+  console.log("Conta tipo:", conta_tipo);
+}
+
 function moeda(a, e, r, t) {
     let n = ""
       , h = j = 0
