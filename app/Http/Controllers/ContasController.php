@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Contas;
 use Illuminate\Http\Request;
 use Session;
+
   
 class ContasController extends Controller
 {
@@ -42,11 +43,13 @@ class ContasController extends Controller
    
     }
   public function edit($id)
-    {
-        return view('edit.edit',compact('contas'));
+    {          
+
+        $conta = Contas::where('id', $id)->first();
+        return view('editc', compact('conta'));
 
     }
-   public function update(Request $request)
+   public function update(Request $request, $id)
    {
      $request->validate([
             'local' => 'required',
@@ -60,16 +63,28 @@ class ContasController extends Controller
             'preco.required' => 'O campo Preço é obrigatório!',
         ]
     );
+     
+        $date = str_replace('/', '-', $request['data'] );
+        $newDate = date("Y-m-d", strtotime($date));
 
-        Contas::create($request->all());
-        return redirect()->route('edit')
+        $request['data'] = $newDate;
+
+    $contas = Contas::find($id);
+
+    $dados = $request->all();
+
+
+        $contas->update($dados);
+        return redirect()->route('conta.editc',[$id])
                         ->with('success','Conta editada com sucesso.');
    }
 
-    public function destroy(Contas $contas)
+    public function destroy($id)
     {
-        $contas->delete();
-        return redirect('index')->with('success','Conta apagada com sucesso');
+
+        Contas::where('id',$id)->delete();
+        return redirect()->route('dashboard.show')
+                        ->with('success','Conta deletada com sucesso.');
     }
 }
 

@@ -14,7 +14,7 @@ class AddContaMensalToContas extends Migration
     public function up()
     {
         Schema::table('contas', function (Blueprint $table) {
-            $table->boolean('conta_mensal')->after('id_usuario')->nulllable();
+            $table->boolean('conta_mensal')->after('id_usuario')->default(0);
             $table->string('dia_venc')->after('data')->nullable();
         });
     }

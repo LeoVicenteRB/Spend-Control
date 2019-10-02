@@ -17,7 +17,7 @@ class CreateContasTable extends Migration
             $table->bigIncrements('id');
             $table->string('local');
             $table->string('tipo');
-            $table->date('data');
+            $table->date('data')->nullable();
             $table->string('preco');
             $table->timestamps();
         });

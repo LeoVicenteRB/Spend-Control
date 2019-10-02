@@ -54,6 +54,50 @@ class DispesasController extends Controller
 
         return view('dispesas/showdisp')->with('dispesas', $dispesas);
     }
+    public function edit($id)
+    {          
 
+        $dispesa = Dispesas::where('id', $id)->first();
+        return view('editd', compact('dispesa'));
+
+    }
+
+    public function update(Request $request, $id)
+   {
+     $request->validate([
+            'local' => 'required',
+            'tipo' => 'required',
+            'datap'=>'required',
+            'preco'=>'required',
+        ],[
+            'local.required' => 'O campo Local é obrigatório!',
+            'tipo.required' => 'O campo Tipo é obrigatório!',
+            'datap.required' => 'O campo Data é obrigatório!',
+            'preco.required' => 'O campo Preço é obrigatório!',
+        ]
+    );
+     
+       $date = str_replace('/', '-', $request['datap'] );
+        $newDate = date("Y-m-d", strtotime($date));
+
+        $request['datap'] = $newDate;
+
+    $dispesas = Dispesas::find($id);
+
+    $dados = $request->all();
+
+
+        $dispesas->update($dados);
+        return redirect()->route('dispesas.editd',[$id])
+                        ->with('success','Dispesa editada com sucesso.');
+   }
+
+    public function destroy($id)
+    {
+
+        Dispesas::where('id',$id)->delete();
+        return redirect()->route('dispesas.show')
+                        ->with('success','Dispesa deletada com sucesso.');
+    }
    
 }
